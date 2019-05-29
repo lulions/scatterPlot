@@ -20,6 +20,13 @@ window.onload = function(){
     // variable used for fill circles
     var c = "species";
 
+    // variable used for radius
+    var r = "petLen";
+    
+    // opacity
+    var alpha = 0.6;
+    
+    // set box model params
     var boxModel = {
 
         h : 500,
@@ -29,16 +36,13 @@ window.onload = function(){
 
     };
 
+    // set distance between axes and data (in % of the variable's range)
     var innerPadding = 2.5;
-
-    // circles attr
-    var r = 5;
-    var alpha = 1;
 
     // load data and draw
     d3.csv("iris.csv", rowConverter).then(function(data){
 
-        drawScatterplot(data, x, y, c, boxModel, innerPadding, r, alpha);
+        drawScatterplot(data, x, y, c, r, alpha, boxModel, innerPadding);
         
     })
     

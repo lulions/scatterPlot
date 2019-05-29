@@ -1,4 +1,4 @@
-function drawScatterplot(data, x, y, c, boxModel, innerPadding, r, alpha){
+function drawScatterplot(data, x, y, c, r, alpha, boxModel, innerPadding){
 
         // filter: array distinct 
         function onlyUnique(value, index, self) { 
@@ -31,6 +31,14 @@ function drawScatterplot(data, x, y, c, boxModel, innerPadding, r, alpha){
             return d[y];
         });
 
+        var rMin = d3.min(data, function(d){
+            return d[r];
+        });
+
+        var rMax = d3.max(data, function(d){
+            return d[r];
+        });
+
         // define space between axes and data (as CoefDiff% of the range)
         var xDiff = xMax - xMin;
         var yDiff = yMax - yMin;
@@ -54,6 +62,9 @@ function drawScatterplot(data, x, y, c, boxModel, innerPadding, r, alpha){
 
         var yScale = d3.scaleLinear().domain([yMin-axisYPadding, yMax+axisYPadding])
                 .range([minYRange, maxYRange]);
+
+        var rScale  = d3.scaleSqrt().domain([rMin, rMax])
+                .range([4, 7]);
 
         // create axes
         var xAxis = d3.axisBottom(xScale);
@@ -86,7 +97,9 @@ function drawScatterplot(data, x, y, c, boxModel, innerPadding, r, alpha){
         .attr("fill", function(d){
             return c10[species.indexOf(d.species)];
         })
-        .attr("r", r)
+        .attr("r", function(d){
+            return rScale(d[r]);
+        })
         .attr("opacity", alpha);
 
         // add x axis
